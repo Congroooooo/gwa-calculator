@@ -1,8 +1,16 @@
 import React from 'react'
 
-function SubjectTable({ subjects, onRemove }) {
+function SubjectTable({ subjects, onRemove, onEdit, emptyMessage, ariaLabels }) {
+  if (!subjects.length) {
+    return (
+      <div className="empty-table-state">
+        <span role="img" aria-label="notebook" style={{fontSize: '2rem', display: 'block', marginBottom: 8}}>📒</span>
+        <div>{emptyMessage || 'No data available.'}</div>
+      </div>
+    )
+  }
   return (
-    <table className="w-full border">
+    <table className="w-full border subject-table responsive-table">
       <thead>
         <tr className="bg-gray-100">
           <th className="border p-2">Subject</th>
@@ -19,13 +27,19 @@ function SubjectTable({ subjects, onRemove }) {
             <td>{subj.unit}</td>
             <td>
               <button
+                className="remove-btn"
                 onClick={() => onRemove(index)}
+                aria-label={ariaLabels?.remove || 'Remove'}
               >
-                Remove
+                <span role="img" aria-label="remove">🗑️</span> Remove
               </button>
-                <button 
-                    onclick={() => onEdit(index)}>Edit
-                </button>
+              <button
+                className="edit-btn"
+                onClick={() => onEdit(index)}
+                aria-label={ariaLabels?.edit || 'Edit'}
+              >
+                <span role="img" aria-label="edit">✏️</span> Edit
+              </button>
             </td>
           </tr>
         ))}
